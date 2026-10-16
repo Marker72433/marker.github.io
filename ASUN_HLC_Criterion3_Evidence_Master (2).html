@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASU-Newport HLC Criterion 3 Evidence Master</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6fb;margin:0;padding:20px}
+h1{text-align:center;color:#4b286d} .banner{text-align:center;margin-bottom:10px}
+.game{display:flex;gap:20px;flex-wrap:wrap;max-width:1400px;margin:auto}
+.left,.right{flex:1;min-width:320px}
+.card{background:#fff;border:2px solid #4b286d;border-radius:8px;padding:10px;margin:8px 0;cursor:move}
+.dropzone{background:#fff;border:2px dashed #999;border-radius:8px;min-height:55px;padding:10px;margin:8px 0}
+.correct{background:#dff0d8}.incorrect{background:#f8d7da}
+button{background:#4b286d;color:#fff;border:none;padding:10px 16px;border-radius:6px;margin:4px}
+.controls{text-align:center}.cert{display:none;border:4px solid gold;background:#fff;padding:20px;margin:20px auto;max-width:700px;text-align:center}
+@media(max-width:768px){.game{flex-direction:column}}
+</style></head><body>
+<h1>ASU-Newport HLC Criterion 3 Evidence Master</h1>
+<div class='banner'>Match evidence examples to the correct Criterion 3 Core Component.</div>
+<div class='game'><div class='left'><div id='cards'></div></div><div class='right'>
+<div class='dropzone' data-match='A'><b>3.A Educational Programs</b></div>
+<div class='dropzone' data-match='B'><b>3.B Exercise of Intellectual Inquiry</b></div>
+<div class='dropzone' data-match='C'><b>3.C Sufficiency of Faculty and Staff</b></div>
+<div class='dropzone' data-match='D'><b>3.D Student Learning Support & Teaching Resources</b></div>
+<div class='dropzone' data-match='E'><b>3.E Assessment of Student Learning</b></div>
+<div class='dropzone' data-match='F'><b>3.F Program Review</b></div>
+<div class='dropzone' data-match='G'><b>3.G Student Success Outcomes</b></div>
+</div></div>
+<div class='controls'>
+<button onclick='checkAnswers()'>Check Answers</button>
+<button onclick='showFeedback()'>Feedback</button>
+<button onclick='location.reload()'>Reset</button>
+<div id='score'></div></div>
+<div id='feedback'></div>
+<div id='cert' class='cert'><h2>Criterion 3 Evidence Master</h2><p>Congratulations! You achieved 80% or higher.</p></div>
+<script>
+const evidence=[
+['Program learning outcomes in catalog','A'],['General education curriculum map','A'],['Course sequencing documentation','A'],
+['Undergraduate research showcase','B'],['Inquiry-based assignments','B'],['Student research presentations','B'],
+['Faculty qualification matrix','C'],['Student-to-faculty ratio data','C'],['Professional development records','C'],
+['Tutoring center usage reports','D'],['Academic advising documentation','D'],['Library resource support data','D'],
+['Assessment rubrics','E'],['Curriculum assessment reports','E'],['Closing-the-loop improvement evidence','E'],
+['Program review committee minutes','F'],['External program review reports','F'],['Advisory committee recommendations','F'],
+['Retention data','G'],['Graduation rate benchmarking','G'],['Job placement outcomes','G']];
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const deck=shuffle([...evidence]);
+let cards=document.getElementById('cards');
+deck.forEach((e,i)=>{let d=document.createElement('div');d.className='card';d.draggable=true;d.dataset.match=e[1];d.textContent=e[0];cards.appendChild(d);});
+let dragged=null;
+document.addEventListener('dragstart',e=>{if(e.target.classList.contains('card')) dragged=e.target;});
+document.querySelectorAll('.dropzone').forEach(z=>{z.addEventListener('dragover',e=>e.preventDefault());z.addEventListener('drop',e=>{e.preventDefault();z.appendChild(dragged);});});
+function checkAnswers(){let correct=0,total=document.querySelectorAll('.card').length;document.querySelectorAll('.card').forEach(c=>{c.style.borderColor='#4b286d';let p=c.parentElement.dataset.match;if(p&&p===c.dataset.match){correct++;c.style.borderColor='green';}else if(p){c.style.borderColor='red';}});let pct=Math.round(correct/total*100);document.getElementById('score').innerHTML='Score: '+correct+'/'+total+' ('+pct+'%)';if(pct>=80){document.getElementById('cert').style.display='block';}}
+function showFeedback(){document.getElementById('feedback').innerHTML='<h3>Guide</h3><ul><li>3.A Programs and curriculum</li><li>3.B Inquiry and research</li><li>3.C Faculty sufficiency and qualifications</li><li>3.D Student support resources</li><li>3.E Learning assessment</li><li>3.F Program review</li><li>3.G Student success outcomes</li></ul>';}
+</script></body></html>
